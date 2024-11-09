@@ -8,7 +8,7 @@ import kotlin.math.PI
 
 class Food(private var screen: MainActivity.Screen): GameObject {
     private val paint = Paint()
-    private val radius = 15f
+    private val radius = 15
     private var w = 0f
     private var h = 0f
 
@@ -22,23 +22,42 @@ class Food(private var screen: MainActivity.Screen): GameObject {
     }
 
     override fun render(canvas: Canvas) {
-        canvas.drawCircle(w, h, radius, paint)
+        canvas.drawCircle(w, h, radius.toFloat(), paint)
     }
 
     override fun onTouch(e: MotionEvent) {
-        TODO("Not yet implemented")
+
     }
 
     fun generateRandomCircle(screenWidth: Float, screenHeight: Float): Pair<Float, Float> {
-        val x = (10..(screenWidth.toInt() - 10)).random().toFloat()  + 20 //para garantir que o quadrado não saia da tela
-        var y = (10..(screenHeight.toInt() - 10)).random().toFloat()
-        y += if (y > 0) {10} else -10
-        return Pair(x, y)
+        val x = (radius..(screenWidth.toInt() - radius)).random().toFloat()
+        val y = (radius..(screenHeight.toInt() - radius)).random().toFloat()
+
+        return Pair(
+            if (x > screen.width.toFloat() - screen.marginHorizontalAndBottom)
+                screen.width.toFloat() - screen.marginHorizontalAndBottom
+            else if (x < 0f)
+                screen.marginHorizontalAndBottom
+            else x, // X axis
+            if (y > screen.height.toFloat() - screen.marginHorizontalAndBottom)
+                screen.height.toFloat() - screen.marginHorizontalAndBottom
+            else if (y < 0f)
+                screen.marginTop
+            else y // Y axis
+        )
     }
 
     fun spawnFood(screenWidth: Float, screenHeight: Float) {
         val randomPosition = generateRandomCircle(screenWidth, screenHeight)
         w = randomPosition.first
         h = randomPosition.second
+    }
+
+    fun isEaten(snakeX: Float, snakeY: Float, snakeSize: Float): Boolean {
+        val distanceX = w - snakeX
+        val distanceY = h - snakeY
+        val distance = Math.sqrt((distanceX * distanceX + distanceY * distanceY).toDouble()).toFloat()
+
+        return distance < (radius + snakeSize)
     }
 }
