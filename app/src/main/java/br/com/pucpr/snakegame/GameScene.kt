@@ -15,21 +15,25 @@ class GameScene(private val speed: Float, private val screen: MainActivity.Scree
     private var endGame = false
     private var snake = Snake(snakeWidth, snakeHeight, speed, screen)
     private var food = Food(screen)
+    private var score = Score(screen)
 
     override fun update(et: Float) {
         if (!endGame) {
             snake.update(et)
             food.update(et)
+            score.update(et)
         }
         if (food.isEaten(snake.w, snake.h, snake.size)) {
             food.spawnFood(screen.width.toFloat(), screen.height.toFloat())
             snake.grow()
+            score.increaseScore()
         }
     }
 
     override fun render(canvas: Canvas) {
         snake.render(canvas)
         food.render(canvas)
+        score.render(canvas)
     }
 
     override fun onTouch(e: MotionEvent): Boolean {
