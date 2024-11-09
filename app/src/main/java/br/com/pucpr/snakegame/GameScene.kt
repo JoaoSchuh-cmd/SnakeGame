@@ -9,12 +9,11 @@ import android.graphics.Rect
 import android.view.MotionEvent
 import androidx.appcompat.app.AlertDialog
 
-class GameScene(private val screen: MainActivity.Screen): Scene {
+class GameScene(private val speed: Float, private val screen: MainActivity.Screen): Scene {
     private var snakeWidth = screen.width/2f
     private val snakeHeight = screen.height/2f
     private var endGame = false
-    private val boxCollision = Rect(0, 0, 70, screen.height)
-    private var snake = Snake(snakeWidth, snakeHeight, screen)
+    private var snake = Snake(snakeWidth, snakeHeight, speed, screen)
     private var food = Food(screen)
 
     override fun update(et: Float) {
@@ -22,16 +21,9 @@ class GameScene(private val screen: MainActivity.Screen): Scene {
             snake.update(et)
             food.update(et)
         }
-
-        if (snake.touchWall) {
-            AlertDialog.Builder(screen.context)
-                .setTitle("Game Over")
-                .setMessage("Snake touched the wall :/")
-                .setPositiveButton("Recomeçar", DialogInterface.OnClickListener { dialog, id ->
-
-                })
-                .create()
-                .show()
+        if (food.isEaten(snake.w, snake.h, snake.size)) {
+            food.spawnFood(screen.width.toFloat(), screen.height.toFloat())
+            snake.grow()
         }
     }
 
@@ -41,13 +33,7 @@ class GameScene(private val screen: MainActivity.Screen): Scene {
     }
 
     override fun onTouch(e: MotionEvent): Boolean {
-//        when (e.action) {
-//            MotionEvent.ACTION_DOWN -> {
-//                x = e.x
-//                y = e.y
-//            }
-//        }
-
-        return false
+        snake.onTouch(e)
+        return true
     }
 }
