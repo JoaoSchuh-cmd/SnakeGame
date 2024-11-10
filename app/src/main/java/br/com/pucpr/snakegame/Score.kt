@@ -7,7 +7,7 @@ import android.view.MotionEvent
 
 class Score(private val screen: MainActivity.Screen) : GameObject {
     private var paint = Paint()
-    private var score = 0
+    private var score = 1
 
     override fun update(et: Float) {
 
@@ -15,6 +15,7 @@ class Score(private val screen: MainActivity.Screen) : GameObject {
 
     override fun render(canvas: Canvas) {
         paint.color = Color.WHITE
+
         paint.textSize = 80f
         paint.isFakeBoldText = true
         canvas.drawText(score.toString(), (screen.width - 150f), 150f, paint)
