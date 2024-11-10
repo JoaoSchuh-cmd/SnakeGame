@@ -4,11 +4,12 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.view.MotionEvent
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 import kotlin.math.PI
 
-class Food(private var screen: MainActivity.Screen): GameObject {
+class Food(private var screen: MainActivity.Screen, private var marginTop: Float, private var marginHorizontal: Float): GameObject {
     private val paint = Paint()
-    private val radius = 15
+    private val radius = 25
     private var w = 0f
     private var h = 0f
 
@@ -30,21 +31,10 @@ class Food(private var screen: MainActivity.Screen): GameObject {
     }
 
     fun generateRandomCircle(screenWidth: Float, screenHeight: Float): Pair<Float, Float> {
-        val x = (radius..(screenWidth.toInt() - radius)).random().toFloat()
-        val y = (radius..(screenHeight.toInt() - radius)).random().toFloat()
+        val x = (radius..(screenWidth.toInt() - radius - marginHorizontal.toInt())).random().toFloat()
+        val y = (radius..(screenHeight.toInt() - radius - marginTop.toInt())).random().toFloat()
 
-        return Pair(
-            if (x > screen.width.toFloat() - screen.marginHorizontalAndBottom)
-                screen.width.toFloat() - screen.marginHorizontalAndBottom
-            else if (x < 0f)
-                screen.marginHorizontalAndBottom
-            else x, // X axis
-            if (y > screen.height.toFloat() - screen.marginHorizontalAndBottom)
-                screen.height.toFloat() - screen.marginHorizontalAndBottom
-            else if (y < 0f)
-                screen.marginTop
-            else y // Y axis
-        )
+        return Pair(x,y)
     }
 
     fun spawnFood(screenWidth: Float, screenHeight: Float) {
