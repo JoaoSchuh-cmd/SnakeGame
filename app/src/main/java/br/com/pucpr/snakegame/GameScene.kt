@@ -25,7 +25,7 @@ class GameScene(private val delay: Float, private val screen: MainActivity.Scree
             snake.checkWinGame(score.winGame())
         }
 
-        if (snake.isVictorious) {
+        if (snake.isVictorious || snake.isGameOver) {
             score.resetScore()
         }
     }
