@@ -25,7 +25,15 @@ class Score(private val screen: MainActivity.Screen) : GameObject {
 
     }
 
+    fun winGame(): Boolean {
+        return score == 2
+    }
+
     fun increaseScore() {
         score += 1
+    }
+
+    fun resetScore() {
+        score = 0
     }
 }

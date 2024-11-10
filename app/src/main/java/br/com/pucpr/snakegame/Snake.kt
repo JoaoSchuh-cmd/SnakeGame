@@ -10,6 +10,7 @@ class Snake(var w: Float, var h: Float, private val delay: Float, private val sc
     private val paint = Paint()
     var size = 15f
     var isGameOver = false
+    var isVictorious = false
     private var direction: Direction = Direction.DOWN
     private var initialX = 0f
     private var initialY = 0f
@@ -20,7 +21,7 @@ class Snake(var w: Float, var h: Float, private val delay: Float, private val sc
     private var bodyLength = 1
 
     init {
-        paint.color = Color.YELLOW
+        paint.color = Color.rgb(255, 140, 25)
         resetSnake()
     }
 
@@ -60,10 +61,18 @@ class Snake(var w: Float, var h: Float, private val delay: Float, private val sc
     override fun render(canvas: Canvas) {
         canvas.drawColor(Color.rgb(50,117,53))
 
+        val gameWinText = "You win!"
         val gameOverText = "Game Over"
         val resetText = "Toque para reiniciar"
 
-        if (!isGameOver) {
+        if (isVictorious) {
+            paint.color = Color.GREEN
+            paint.textSize = 100f
+            canvas.drawText(gameWinText, (screen.width - paint.measureText(gameWinText)) / 2f, screen.height / 2f, paint)
+            paint.textSize = 50f
+            paint.color = Color.WHITE
+            canvas.drawText(resetText, (screen.width - paint.measureText(resetText)) / 2f, (screen.height / 2f) + 100f, paint)
+        } else if (!isGameOver) {
             body.forEach { (segmentW, segmentH) ->
                 canvas.drawRect(segmentW + size, segmentH + size, segmentW - size, segmentH - size, paint)
             }
@@ -78,7 +87,7 @@ class Snake(var w: Float, var h: Float, private val delay: Float, private val sc
     }
 
     override fun onTouch(e: MotionEvent) {
-        if (isGameOver) {
+        if (isGameOver || isVictorious) {
             if (e.action == MotionEvent.ACTION_DOWN) {
                 resetSnake()
             }
@@ -113,6 +122,10 @@ class Snake(var w: Float, var h: Float, private val delay: Float, private val sc
         bodyLength += 1
     }
 
+    fun checkWinGame(wonTheGame: Boolean) {
+        isVictorious = wonTheGame
+    }
+
     private fun resetSnake() {
         w = screen.width / 2f
         h = screen.height / 2f
@@ -121,7 +134,8 @@ class Snake(var w: Float, var h: Float, private val delay: Float, private val sc
         bodyLength = 1
         direction = Direction.DOWN
         isGameOver = false
-        paint.color = Color.YELLOW
+        paint.color = Color.rgb(255, 140, 25)
+        isVictorious = false
     }
 
     private fun checkSelfCollision(): Boolean {

@@ -55,31 +55,30 @@ class StartScene(private val screen: MainActivity.Screen): Scene {
     }
 
     override fun onTouch(e: MotionEvent): Boolean {
-        //if (!isGameStarted && e.action == MotionEvent.ACTION_DOWN) {
-            val x = e.x
-            val y = e.y
+        val x = e.x
+        val y = e.y
 
-            val easyBounds = screen.height / 2f - 130f..screen.height / 2f - 70f
-            val mediumBounds = screen.height / 2f - 30f..screen.height / 2f + 30f
-            val hardBounds = screen.height / 2f + 70f..screen.height / 2f + 130f
+        val easyBounds = screen.height / 2f - 130f..screen.height / 2f - 70f
+        val mediumBounds = screen.height / 2f - 30f..screen.height / 2f + 30f
+        val hardBounds = screen.height / 2f + 70f..screen.height / 2f + 130f
 
-            when {
-                x in screen.width / 2f - 100f..screen.width / 2f + 100f && y in easyBounds -> {
-                    setDifficulty(Difficulty.EASY)
-                }
-                x in screen.width / 2f - 100f..screen.width / 2f + 100f && y in mediumBounds -> {
-                    setDifficulty(Difficulty.MEDIUM)
-                }
-                x in screen.width / 2f - 100f..screen.width / 2f + 100f && y in hardBounds -> {
-                    setDifficulty(Difficulty.HARD)
-                }
-                else -> setDifficulty(Difficulty.NONE)
+        when {
+            x in screen.width / 2f - 100f..screen.width / 2f + 100f && y in easyBounds -> {
+                setDifficulty(Difficulty.EASY)
             }
-            if (difficulty != Difficulty.NONE) {
-                screen.scene = GameScene(difficulty.delay, screen)
-                return true
-            } else
-                return false
+            x in screen.width / 2f - 100f..screen.width / 2f + 100f && y in mediumBounds -> {
+                setDifficulty(Difficulty.MEDIUM)
+            }
+            x in screen.width / 2f - 100f..screen.width / 2f + 100f && y in hardBounds -> {
+                setDifficulty(Difficulty.HARD)
+            }
+            else -> setDifficulty(Difficulty.NONE)
+        }
+        if (difficulty != Difficulty.NONE) {
+            screen.scene = GameScene(difficulty.delay, screen)
+            return true
+        } else
+            return false
     }
 
     private fun loadBitmap(file: String): Bitmap? {
