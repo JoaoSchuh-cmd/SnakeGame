@@ -9,13 +9,16 @@ import android.graphics.Rect
 import android.view.MotionEvent
 import androidx.appcompat.app.AlertDialog
 
-class GameScene(private val speed: Float, private val screen: MainActivity.Screen): Scene {
+class GameScene(private val delay: Float, private val screen: MainActivity.Screen): Scene {
     private var snakeWidth = screen.width/2f
     private val snakeHeight = screen.height/2f
     private var endGame = false
-    private var snake = Snake(snakeWidth, snakeHeight, speed, screen)
-    private var food = Food(screen)
+    private val marginTop = 500f
+    private val marginHorizontalAndBottom = 500f
+    private var snake = Snake(snakeWidth, snakeHeight, delay, screen)
+    private var food = Food(screen, marginTop, marginHorizontalAndBottom)
     private var score = Score(screen)
+
 
     override fun update(et: Float) {
         if (!endGame) {

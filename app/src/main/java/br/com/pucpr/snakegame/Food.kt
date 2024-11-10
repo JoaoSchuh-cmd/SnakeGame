@@ -4,8 +4,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.view.MotionEvent
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
-import kotlin.math.PI
 
 class Food(private var screen: MainActivity.Screen, private var marginTop: Float, private var marginHorizontal: Float): GameObject {
     private val paint = Paint()
