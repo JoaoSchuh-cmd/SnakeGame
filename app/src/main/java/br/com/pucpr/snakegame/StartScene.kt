@@ -5,23 +5,18 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Rect
 import android.util.Log
 import android.view.MotionEvent
-import android.widget.Button
-import java.text.AttributedCharacterIterator.Attribute
-import java.util.jar.Attributes
 import kotlin.random.Random
 
 class StartScene(private val screen: MainActivity.Screen): Scene {
-
     private val paint = Paint()
     private var snakeBitmap: Bitmap? = null
 
-    enum class Difficulty(val speed: Float) {
-        EASY(200f),
-        MEDIUM(400f),
-        HARD(600f),
+    enum class Difficulty(val delay: Float) {
+        EASY(400f),
+        MEDIUM(350f),
+        HARD(200f),
         NONE(0f)
     }
 
@@ -81,7 +76,7 @@ class StartScene(private val screen: MainActivity.Screen): Scene {
                 else -> setDifficulty(Difficulty.NONE)
             }
             if (difficulty != Difficulty.NONE) {
-                screen.scene = GameScene(difficulty.speed, screen)
+                screen.scene = GameScene(difficulty.delay, screen)
                 return true
             } else
                 return false
